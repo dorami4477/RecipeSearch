@@ -30,7 +30,7 @@ final class NetworkManager {
 
     // 네트워킹 요청하는 함수
     func fetchRecipe(searchTerm: String?, completion: @escaping NetworkCompletion) {
-        var urlString = "\(RecipeApi.requestUrl)/\(RecipeApi.keyID)/\(RecipeApi.serviceName)/1/100"
+        var urlString = "\(RecipeApi.requestUrl)/\(RecipeApi.keyID)/\(RecipeApi.serviceName)/1/10"
         if searchTerm != nil && searchTerm != ""{
             urlString = urlString + searchTerm!
         }

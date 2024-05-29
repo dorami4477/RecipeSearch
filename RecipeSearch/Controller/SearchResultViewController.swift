@@ -34,7 +34,6 @@ class SearchResultViewController: UIViewController {
         super.viewDidLoad()
         setupCollectionView()
         configureButtons()
-        
     }
     func configureButtons() {
         var i = 0
@@ -125,5 +124,14 @@ extension SearchResultViewController:UICollectionViewDelegate, UICollectionViewD
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(#function)
+        print(indexPath.row)
+        let vc = storyboard?.instantiateViewController(withIdentifier: "DetailRecipeViewController") as! DetailRecipeViewController
+       //**** 여기가 문제
+        vc.recipe = recipeArray[indexPath.row]
+        present(vc, animated: true)
+       
+    }
     
 }

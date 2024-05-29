@@ -18,7 +18,6 @@ final class ViewController: UIViewController, addToPicksDelegate {
     let flowLayout2 = UICollectionViewFlowLayout()
 
     
-    
     let searchController = UISearchController(searchResultsController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultViewController") as! SearchResultViewController)
     
     @IBOutlet var section01TitleLabel: UILabel!
@@ -93,7 +92,7 @@ final class ViewController: UIViewController, addToPicksDelegate {
 
         
         flowLayout2.scrollDirection = .horizontal
-        flowLayout2.itemSize = CGSize(width: UIScreen.main.bounds.width * 0.5 , height: UIScreen.main.bounds.width * 0.7 )
+        flowLayout2.itemSize = CGSize(width: UIScreen.main.bounds.width * 0.6 , height: UIScreen.main.bounds.width * 0.6 )
         flowLayout2.minimumLineSpacing = 20
         
         //컬렉션뷰의 속성에 할당
@@ -102,14 +101,10 @@ final class ViewController: UIViewController, addToPicksDelegate {
         
     }
     
-    
+    //MyPick 저장
     func saveRecipe(_ index: Int) {
         let number  = recipeArray.firstIndex(where: { $0.recipeID == index })!
         myPicks.append(recipeArray[number])
-        
-        print("인덱스넘버\(index)")
-        print(recipeArray[index])
-        print(myPicks.count)
     }
 }
 

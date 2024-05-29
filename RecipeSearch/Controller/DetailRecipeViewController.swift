@@ -10,8 +10,6 @@ import Kingfisher
 
 class DetailRecipeViewController: UIViewController{
 
-    
-
     @IBOutlet var detailTableView: UITableView!
     
     var recipe: Recipes?
@@ -20,15 +18,24 @@ class DetailRecipeViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        detailTableView.rowHeight = UITableView.automaticDimension
-        //detailTableView.estimatedRowHeight = 600
-        detailTableView.dataSource = self
-        detailTableView.delegate = self
         navigationController?.navigationBar.prefersLargeTitles = false
         title = recipe?.recipeName
+        configureTableView()
+    }
+    
+    func configureTableView(){
+        detailTableView.dataSource = self
+        detailTableView.delegate = self
+        detailTableView.rowHeight = UITableView.automaticDimension
         detailTableView.separatorStyle = .none
         detailTableView.register(UINib(nibName: "HowToMakeCell", bundle: nil), forCellReuseIdentifier: "HowToMakeCell")
-
+        
+        //이미지 navigation bar 위로?
+        if #available(iOS 11.0, *)
+        {   self.detailTableView.contentInsetAdjustmentBehavior = UIScrollView.ContentInsetAdjustmentBehavior.never;
+        }else{
+            self.automaticallyAdjustsScrollViewInsets = false
+        }
     }
     
     @IBAction func addMyPickButtonTapped(_ sender: UIButton) {
@@ -37,9 +44,12 @@ class DetailRecipeViewController: UIViewController{
         delegate?.saveRecipe(index)
         navigationController?.popViewController(animated: true)
     }
-    
+
 }
 
+
+
+// MARK: - UITableView
 extension DetailRecipeViewController:UITableViewDelegate, UITableViewDataSource{
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -58,7 +68,7 @@ extension DetailRecipeViewController:UITableViewDelegate, UITableViewDataSource{
         if section == 0{
             return 1
         }else{
-            return (recipe?.manualSet.count)!
+            return recipe?.manualSet.count ?? 0
         }
     }
     
@@ -75,7 +85,6 @@ extension DetailRecipeViewController:UITableViewDelegate, UITableViewDataSource{
             cell.selectionStyle = .none
             cell.recipeLabel.text = recipe?.manualSet[indexPath.row]
             if let imageUrl = recipe?.manualImgSet[indexPath.row]{
-                print(imageUrl)
                 let url = URL(string: imageUrl)
                 cell.recipeImageView.kf.setImage(with: url)
             }
@@ -90,3 +99,5 @@ extension DetailRecipeViewController:UITableViewDelegate, UITableViewDataSource{
     
     
 }
+
+

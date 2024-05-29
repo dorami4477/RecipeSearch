@@ -934,6 +934,7 @@
                             <constraint firstAttribute="bottom" secondItem="YO8-9r-eVH" secondAttribute="bottom" id="kr7-ga-Fss"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="vcG-Rp-9De"/>
                     <connections>
                         <outlet property="resultCollectionView" destination="YO8-9r-eVH" id="zhF-f9-0cg"/>
                         <outletCollection property="categoryButtons" destination="eME-xd-k69" collectionClass="NSMutableArray" id="A7L-h1-crk"/>
@@ -945,7 +946,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kIh-Hm-ImS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4746" y="-485"/>
+            <point key="canvasLocation" x="5672.5190839694651" y="-485.21126760563385"/>
         </scene>
         <!--My Recipes View Controller-->
         <scene sceneID="y8H-ZD-Yqg">
