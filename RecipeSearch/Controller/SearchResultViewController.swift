@@ -18,7 +18,7 @@ class SearchResultViewController: UIViewController {
     
     let networkManager = NetworkManager.shared
     
-    var recipeArray:[[String:String]] = [[:]]
+    var recipeArray:[Recipes] = []
     
     var categoryNames = ["후식", "반찬", "일품", "국&찌개", "밥"]
     
@@ -117,11 +117,11 @@ extension SearchResultViewController:UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = resultCollectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as! SearchResultCell
         
-        if let imgUrl = recipeArray[indexPath.row]["ATT_FILE_NO_MK"]{
+            let imgUrl = recipeArray[indexPath.row].imageUrl
             let url = URL(string: imgUrl)
             cell.mainImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "star"))
             cell.mainImageView.contentMode = .scaleAspectFill
-        }
+        
         return cell
     }
     

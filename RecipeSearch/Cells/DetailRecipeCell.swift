@@ -30,20 +30,20 @@ class DetailRecipeCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(recipe:[String:String]?){
-        if let imageUrl = recipe?["ATT_FILE_NO_MK"]{
-            print("여기서?\(imageUrl)")
-            let url = URL(string: imageUrl)
+    func configure(recipe:Recipes?){
+        
+        if let imagUrl = recipe?.imageUrl{
+            let url = URL(string: imagUrl)
             mainImageView.kf.setImage(with: url)
         }
         
-        info01Label.text = recipe?["INFO_ENG"]
-        info02Label.text = recipe?["INFO_CAR"]
-        info03Label.text = recipe?["INFO_PRO"]
-        info04Label.text = recipe?["INFO_FAT"]
-        info05Label.text = recipe?["INFO_NA"]
+        info01Label.text = recipe?.recipeCal
+        info02Label.text = recipe?.infoCar
+        info03Label.text = recipe?.infoPro
+        info04Label.text = recipe?.infoFat
+        info05Label.text = recipe?.infoNa
         
-        ingredientsLabel.text = recipe?["RCP_PARTS_DTLS"]
+        ingredientsLabel.text = recipe?.ingredient
 
         
         mainImageView.contentMode = .scaleAspectFill

@@ -26,9 +26,9 @@ final class NetworkManager {
     //https://openapi.foodsafetykorea.go.kr/api/0354f80ae0364303900a/COOKRCP01/json/1/5/RCP_NM=누룽지
     //let musicURL = "http://openapi.foodsafetykorea.go.kr/api/keyId/serviceId/dataType/startIdx/endIdx"
     
-    typealias NetworkCompletion = (Result<[[String: String]], NetworkError>) -> Void
+    typealias NetworkCompletion = (Result<[Recipes], NetworkError>) -> Void
 
-    // 네트워킹 요청하는 함수 (음악데이터 가져오기)
+    // 네트워킹 요청하는 함수
     func fetchRecipe(searchTerm: String?, completion: @escaping NetworkCompletion) {
         var urlString = "\(RecipeApi.requestUrl)/\(RecipeApi.keyID)/\(RecipeApi.serviceName)/1/100"
         if searchTerm != nil && searchTerm != ""{
@@ -62,10 +62,10 @@ final class NetworkManager {
             }
             
             // 메서드 실행해서, 결과를 받음
-            if let musics = self.parseJSON(safeData) {
-
+            if let data = self.parseJSON(safeData) {
                 print("Parse 실행")
-                completion(.success(musics))
+                let recipeData = self.apiToRecipeModel(data: data)
+                completion(.success(recipeData))
             } else {
                 print("Parse 실패")
                 completion(.failure(.parseError))
@@ -79,10 +79,7 @@ final class NetworkManager {
     
         // 성공
         do {
-            // 우리가 만들어 놓은 구조체(클래스 등)로 변환하는 객체와 메서드
-            // (JSON 데이터 ====> MusicData 구조체)
             let cookRecipe = try JSONDecoder().decode(apiData.self, from: recipeData)
-            
             return cookRecipe.cookRecipes.info
         // 실패
         } catch {
@@ -90,5 +87,55 @@ final class NetworkManager {
             return nil
         }
     }
+    
+    
+    func apiToRecipeModel(data:[[String: String]]) -> [Recipes]{
+        
+        var recipes:[Recipes] = []
+        
+        data.forEach { data in
+            let recipeID = Int(data["RCP_SEQ"]!)!
+            let recipeName = data["RCP_NM"]!
+            let recipeWay = data["RCP_WAY2"]!
+            let recipeType = data["RCP_PAT2"]!
+            let ingredient = data["RCP_PARTS_DTLS"]!
+            let recipeCal = data["INFO_ENG"]!
+            let infoCar = data["INFO_CAR"]!
+            let infoPro = data["INFO_PRO"]!
+            let infoFat = data["INFO_FAT"]!
+            let infoNa = data["INFO_NA"]!
+            let imageUrl = data["ATT_FILE_NO_MAIN"]!
+            
+            var manualSet:[String]{
+                var manualArray:[String] = []
+                for num in 1...20{
+                    let str = String(format: "%02d", num)
+                    if let manual = data["MANUAL\(str)"], manual != ""{
+                        manualArray.append(manual)
+                    }
+                }
+                return manualArray
+            }
+            var manualImgSet:[String]{
+                var manualArray:[String] = []
+                for num in 1...20{
+                    let str = String(format: "%02d", num)
+                    if let manual = data["MANUAL_IMG\(str)"], manual != ""{
+                        manualArray.append(manual)
+                    }
+                }
+                return manualArray
+            }
+
+            let recipe = Recipes(recipeID: recipeID, recipeName: recipeName, recipeWay: recipeWay, recipeType: recipeType, ingredient:ingredient, recipeCal: recipeCal, infoCar: infoCar, infoPro: infoPro, infoFat: infoFat, infoNa: infoNa, imageUrl: imageUrl, manualSet: manualSet, manualImgSet: manualImgSet)
+            
+            recipes.append(recipe)
+            
+        }
+        return recipes
+    }
+    
+    
+    
 }
 

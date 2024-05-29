@@ -133,7 +133,6 @@
 				48B1D8E72BFF4B560022757C /* Assets.xcassets */,
 				48B1D8E92BFF4B560022757C /* LaunchScreen.storyboard */,
 				48B1D8EC2BFF4B560022757C /* Info.plist */,
-				480FAE942C05DF4100D37EFB /* DetailRecipeViewController.swift */,
 				484F23C92C05E928009DDFE2 /* HowToMakeCell.swift */,
 				484F23CA2C05E928009DDFE2 /* HowToMakeCell.xib */,
 			);
@@ -144,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				48B1D8E22BFF4B540022757C /* ViewController.swift */,
+				480FAE942C05DF4100D37EFB /* DetailRecipeViewController.swift */,
 				487414FA2C03337400F8A2EF /* DetailViewController.swift */,
 				48BD7DE52C046BD9001E702B /* SearchResultViewController.swift */,
 				48765C682C05DA2800FBE726 /* MyRecipesViewController.swift */,

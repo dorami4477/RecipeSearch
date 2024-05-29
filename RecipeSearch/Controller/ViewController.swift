@@ -27,9 +27,9 @@ final class ViewController: UIViewController, addToPicksDelegate {
 
     let dataManager = NetworkManager.shared
     
-    var recipeArray:[[String:String]] = [[:]]
+    var recipeArray:[Recipes] = []
     
-    var myPicks:[[String:String]] = []
+    var myPicks:[Recipes] = []
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -68,7 +68,6 @@ final class ViewController: UIViewController, addToPicksDelegate {
             case .success(let recipeDatas):
                 // 데이터(배열)을 받아오고 난 후
                 self.recipeArray = recipeDatas
-                
                 DispatchQueue.main.async {
                     self.recentCollectionView.reloadData()
                 }
@@ -105,7 +104,9 @@ final class ViewController: UIViewController, addToPicksDelegate {
     
     
     func saveRecipe(_ index: Int) {
-        myPicks.append(recipeArray[index])
+        let number  = recipeArray.firstIndex(where: { $0.recipeID == index })!
+        myPicks.append(recipeArray[number])
+        
         print("인덱스넘버\(index)")
         print(recipeArray[index])
         print(myPicks.count)
@@ -127,7 +128,7 @@ extension ViewController:UICollectionViewDelegate{
         if let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailRecipeViewController") as? DetailRecipeViewController{
             let recipe = recipeArray[indexPath.row]
             detailVC.recipe = recipe
-            detailVC.index = indexPath.row
+            detailVC.index = recipe.recipeID
             detailVC.delegate = self
             navigationController?.pushViewController(detailVC, animated: true)
 
@@ -160,23 +161,18 @@ extension ViewController:UICollectionViewDataSource{
         
         if collectionView.tag == 4{
             let cell = recentCollectionView.dequeueReusableCell(withReuseIdentifier: Cell.recipeCellIdentifier, for: indexPath) as! RecipeCell
-            
-            if let imgUrl = recipeArray[indexPath.row]["ATT_FILE_NO_MAIN"]{
-                cell.imageUrl = imgUrl
-            }
-            
-            return cell
+                cell.imageUrl = recipeArray[indexPath.row].imageUrl
+                return cell
+  
         }else if collectionView.tag == 3{
             let cell = myPicksCollectionView.dequeueReusableCell(withReuseIdentifier: Cell.myPickCellIdentifier, for: indexPath) as! MyPicksCell
             if myPicks.count == 0{
                 cell.mainImageView.image = UIImage(systemName: "questionmark.app.dashed")
             }else{
-                if let imgUrl = myPicks[indexPath.row]["ATT_FILE_NO_MAIN"]{
-                    let url = URL(string: imgUrl)
+                    let url = URL(string: myPicks[indexPath.row].imageUrl)
                     cell.mainImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "questionmark.app.dashed"))
                     cell.mainImageView.layer.cornerRadius = 10
                     cell.mainImageView.clipsToBounds = true
-                }
             }
             
 

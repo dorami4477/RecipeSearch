@@ -537,7 +537,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="GlR-A3-3Y6">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="70" estimatedSectionFooterHeight="70" translatesAutoresizingMaskIntoConstraints="NO" id="GlR-A3-3Y6">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
@@ -757,14 +757,28 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a4d-es-bSh">
+                                <rect key="frame" x="16" y="766" width="361" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="RdS-RX-A9b"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                <connections>
+                                    <action selector="addMyPickButtonTapped:" destination="1lx-QK-TmG" eventType="touchUpInside" id="qdJ-ff-vPT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="09D-hs-RxL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="GlR-A3-3Y6" firstAttribute="trailing" secondItem="09D-hs-RxL" secondAttribute="trailing" id="0Xg-5d-n6n"/>
+                            <constraint firstItem="09D-hs-RxL" firstAttribute="bottom" secondItem="GlR-A3-3Y6" secondAttribute="bottom" id="IjO-4w-X0h"/>
                             <constraint firstItem="GlR-A3-3Y6" firstAttribute="top" secondItem="Hj2-kt-0UL" secondAttribute="top" id="PZU-XD-Qkx"/>
                             <constraint firstItem="GlR-A3-3Y6" firstAttribute="leading" secondItem="09D-hs-RxL" secondAttribute="leading" id="enT-Mf-tgE"/>
-                            <constraint firstItem="GlR-A3-3Y6" firstAttribute="bottom" secondItem="09D-hs-RxL" secondAttribute="bottom" id="g6p-qq-CHy"/>
+                            <constraint firstItem="09D-hs-RxL" firstAttribute="trailing" secondItem="a4d-es-bSh" secondAttribute="trailing" constant="16" id="jLY-IS-7VO"/>
+                            <constraint firstItem="a4d-es-bSh" firstAttribute="leading" secondItem="09D-hs-RxL" secondAttribute="leading" constant="16" id="oal-63-fVt"/>
+                            <constraint firstItem="09D-hs-RxL" firstAttribute="bottom" secondItem="a4d-es-bSh" secondAttribute="bottom" constant="8" id="xfX-XV-6Je"/>
                         </constraints>
                     </view>
                     <connections>

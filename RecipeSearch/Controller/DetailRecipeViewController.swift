@@ -14,7 +14,7 @@ class DetailRecipeViewController: UIViewController{
 
     @IBOutlet var detailTableView: UITableView!
     
-    var recipe:[String:String]?
+    var recipe: Recipes?
     var index:Int?
     var delegate:addToPicksDelegate?
     
@@ -25,33 +25,56 @@ class DetailRecipeViewController: UIViewController{
         detailTableView.dataSource = self
         detailTableView.delegate = self
         navigationController?.navigationBar.prefersLargeTitles = false
-        title = recipe?["RCP_NM"]
+        title = recipe?.recipeName
         detailTableView.separatorStyle = .none
         detailTableView.register(UINib(nibName: "HowToMakeCell", bundle: nil), forCellReuseIdentifier: "HowToMakeCell")
 
     }
-
+    
+    @IBAction func addMyPickButtonTapped(_ sender: UIButton) {
+        print(#function)
+        guard let index else { return }
+        delegate?.saveRecipe(index)
+        navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 extension DetailRecipeViewController:UITableViewDelegate, UITableViewDataSource{
 
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0{
+            return 0
+        }else{
+            return 60
+        }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        if section == 0{
+            return 1
+        }else{
+            return (recipe?.manualSet.count)!
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0{
+        
+        if indexPath.section == 0{
             let cell = detailTableView.dequeueReusableCell(withIdentifier: "DetailRecipeCell", for: indexPath) as! DetailRecipeCell
             cell.configure(recipe:self.recipe)
             cell.selectionStyle = .none
             
             return cell
         }else{
-            
             let cell = detailTableView.dequeueReusableCell(withIdentifier: "HowToMakeCell", for: indexPath) as! HowToMakeCell
-            cell.recipeLabel.text = recipe?["MANUAL0\(indexPath.row)"]
-            if let imageUrl = recipe?["MANUAL_IMG0\(indexPath.row)"]{
+            cell.selectionStyle = .none
+            cell.recipeLabel.text = recipe?.manualSet[indexPath.row]
+            if let imageUrl = recipe?.manualImgSet[indexPath.row]{
                 print(imageUrl)
                 let url = URL(string: imageUrl)
                 cell.recipeImageView.kf.setImage(with: url)

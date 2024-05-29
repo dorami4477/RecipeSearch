@@ -16,14 +16,15 @@ struct Recipes {
     let recipeName: String // 메뉴명
     let recipeWay: String // 조리방법
     let recipeType: String // 요리종류
-    let recipeCal: Int // 열량
-    let infoCar: Int // 탄수화물
-    let infoPro: Int // 단백질
-    let infoFat: Int // 지방
-    let infoNa: Int // 나트륨
+    let ingredient:String //재료
+    let recipeCal: String // 열량
+    let infoCar: String // 탄수화물
+    let infoPro: String // 단백질
+    let infoFat: String // 지방
+    let infoNa: String // 나트륨
     let imageUrl: String // 이미지경로
-    
-
+    let manualSet:[String] //만드는 방법
+    let manualImgSet:[String] //만드는 방법 이미지
 }
 
 // MARK: - 네트워크로부터 받아오는 데이터
