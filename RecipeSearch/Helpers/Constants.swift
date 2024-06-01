@@ -12,15 +12,8 @@ public struct RecipeApi{
     static let requestUrl = "https://openapi.foodsafetykorea.go.kr/api"
     static let keyID = "0354f80ae0364303900a"
     static let serviceName = "COOKRCP01/json"
-    //static let
 }
 
-// 사용하게될 Cell 문자열 묶음
-public struct Cell {
-    static let recipeCellIdentifier = "RecipeCell"
-    static let myPickCellIdentifier = "MyPicksCell"
-    private init() {}
-}
 
 // 컬렉션뷰 구성을 위한 설정
 public struct CVCell {

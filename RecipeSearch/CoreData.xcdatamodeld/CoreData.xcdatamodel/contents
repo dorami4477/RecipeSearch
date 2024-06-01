@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Recipe" representedClassName="Recipe" syncable="YES">
+        <attribute name="imageUrl" optional="YES" attributeType="String"/>
+        <attribute name="infoCar" optional="YES" attributeType="String"/>
+        <attribute name="infoFat" optional="YES" attributeType="String"/>
+        <attribute name="infoNa" optional="YES" attributeType="String"/>
+        <attribute name="infoPro" optional="YES" attributeType="String"/>
+        <attribute name="ingredient" optional="YES" attributeType="String"/>
+        <attribute name="manualImgSet" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="[String]"/>
+        <attribute name="manualSet" optional="YES" attributeType="Transformable" valueTransformerName="" customClassName="[String]"/>
+        <attribute name="recipeCal" optional="YES" attributeType="String"/>
+        <attribute name="recipeID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="recipeIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="recipeName" optional="YES" attributeType="String"/>
+        <attribute name="recipeType" optional="YES" attributeType="String"/>
+        <attribute name="recipeWay" optional="YES" attributeType="String"/>
+    </entity>
+</model>

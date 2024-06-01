@@ -7,8 +7,9 @@
 
 import Foundation
 
-protocol addToPicksDelegate:AnyObject{
-    func saveRecipe(_ index:Int)
+
+protocol CategoryDelegate:AnyObject{
+    func saveCategory(_ categoryName:String)
 }
 
 struct Recipes {

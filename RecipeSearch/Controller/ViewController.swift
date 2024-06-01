@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-final class ViewController: UIViewController, addToPicksDelegate {
+final class ViewController: UIViewController{
 
     
     //컬렉션뷰
@@ -18,29 +18,28 @@ final class ViewController: UIViewController, addToPicksDelegate {
     let flowLayout2 = UICollectionViewFlowLayout()
 
     
-    let searchController = UISearchController(searchResultsController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchResultViewController") as! SearchResultViewController)
+    let searchController = UISearchController(searchResultsController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: SearchResultViewController.identifier) as! SearchResultViewController)
     
     @IBOutlet var section01TitleLabel: UILabel!
     @IBOutlet var section02TitleLabel: UILabel!
-    
 
     let dataManager = NetworkManager.shared
+    let coreManager = CoreDataManager.shared
     
     var recipeArray:[Recipes] = []
     
-    var myPicks:[Recipes] = []
+    lazy var myPicks:[Recipe] = coreManager.getToDoListFromCoreData()
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         setData()
-        
-        myPicksCollectionView.tag = 3
-        recentCollectionView.tag = 4
     }
 
+    
     override func viewWillAppear(_ animated: Bool) {
+        myPicks = coreManager.getToDoListFromCoreData()
         myPicksCollectionView.reloadData()
     }
 
@@ -80,17 +79,12 @@ final class ViewController: UIViewController, addToPicksDelegate {
     func setupCollectionView(){
         // 컬렉션뷰의 스코롤 방향 설정
         flowLayout.scrollDirection = .horizontal
-        
-        // 아이템의 가로 구하기
-       // let collectionCellWidth = (UIScreen.main.bounds.width - CVCell.spacingWitdh * (CVCell.cellColumns - 1)) / CVCell.cellColumns
-        
+
         let collectionCellWidth = UIScreen.main.bounds.width - CVCell.spacingWitdh - 20
 
         flowLayout.itemSize = CGSize(width: collectionCellWidth , height: collectionCellWidth )
         flowLayout.minimumLineSpacing = CVCell.spacingWitdh
 
-
-        
         flowLayout2.scrollDirection = .horizontal
         flowLayout2.itemSize = CGSize(width: UIScreen.main.bounds.width * 0.6 , height: UIScreen.main.bounds.width * 0.6 )
         flowLayout2.minimumLineSpacing = 20
@@ -100,98 +94,90 @@ final class ViewController: UIViewController, addToPicksDelegate {
         myPicksCollectionView.collectionViewLayout = flowLayout2
         
     }
-    
-    //MyPick 저장
-    func saveRecipe(_ index: Int) {
-        let number  = recipeArray.firstIndex(where: { $0.recipeID == index })!
-        myPicks.append(recipeArray[number])
-    }
+
 }
 
-extension ViewController:UICollectionViewDelegate{
+
+
+// MARK: - UICollectionView
+extension ViewController:UICollectionViewDataSource, UICollectionViewDelegate{
+    
+    //셀 클릭시
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        /*
-        if let detailVC = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController{
+        let detailVC = storyboard?.instantiateViewController(withIdentifier: DetailRecipeViewController.identifier) as! DetailRecipeViewController
+        switch collectionView {
+        case myPicksCollectionView:
+            let recipe = myPicks[indexPath.row]
+            detailVC.recipe = Recipes(recipeID: Int(recipe.recipeID), recipeName: recipe.recipeName!, recipeWay: recipe.recipeWay!, recipeType: recipe.recipeType!, ingredient:recipe.ingredient!, recipeCal: recipe.recipeCal!, infoCar: recipe.infoCar!, infoPro: recipe.infoPro!, infoFat: recipe.infoFat!, infoNa: recipe.infoNa!, imageUrl: recipe.imageUrl!, manualSet: recipe.manualSet, manualImgSet: recipe.manualImgSet)
+        case recentCollectionView:
             let recipe = recipeArray[indexPath.row]
             detailVC.recipe = recipe
-            detailVC.index = indexPath.row
-            detailVC.delegate = self
-            navigationController?.pushViewController(detailVC, animated: true)
-
-        }*/
         
-        if let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailRecipeViewController") as? DetailRecipeViewController{
+        default:
             let recipe = recipeArray[indexPath.row]
             detailVC.recipe = recipe
-            detailVC.index = recipe.recipeID
-            detailVC.delegate = self
-            navigationController?.pushViewController(detailVC, animated: true)
-
         }
+        
+        navigationController?.pushViewController(detailVC, animated: true)
+
     }
     
-    
-}
-
-
-extension ViewController:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch collectionView {
 
-        switch collectionView.tag {
-        case 4:
-            return recipeArray.count
-        case 3:
+        case myPicksCollectionView:
             if myPicks.count == 0{
                 return 1
             }else{
                 return myPicks.count
             }
+
+        case recentCollectionView:
+            return recipeArray.count
         default:
             return 0
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print(#function)
         
-        if collectionView.tag == 4{
-            let cell = recentCollectionView.dequeueReusableCell(withReuseIdentifier: Cell.recipeCellIdentifier, for: indexPath) as! RecipeCell
+        //Recipe collectionView
+        if collectionView == recentCollectionView{
+            let cell = recentCollectionView.dequeueReusableCell(withReuseIdentifier: RecipeCell.identifier, for: indexPath) as! RecipeCell
                 cell.imageUrl = recipeArray[indexPath.row].imageUrl
                 return cell
   
-        }else if collectionView.tag == 3{
-            let cell = myPicksCollectionView.dequeueReusableCell(withReuseIdentifier: Cell.myPickCellIdentifier, for: indexPath) as! MyPicksCell
+        //myPick collectionView
+        }else if collectionView == myPicksCollectionView{
+            let cell = myPicksCollectionView.dequeueReusableCell(withReuseIdentifier: MyPicksCell.identifier, for: indexPath) as! MyPicksCell
             if myPicks.count == 0{
                 cell.mainImageView.image = UIImage(systemName: "questionmark.app.dashed")
             }else{
-                    let url = URL(string: myPicks[indexPath.row].imageUrl)
-                    cell.mainImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "questionmark.app.dashed"))
-                    cell.mainImageView.layer.cornerRadius = 10
-                    cell.mainImageView.clipsToBounds = true
+                let url = URL(string: myPicks[indexPath.row].imageUrl!)
+                cell.mainImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "questionmark.app.dashed"))
             }
-            
-
             return cell
         }else{
             return UICollectionViewCell()
         }
         
-        
-        
-        
+   
     }
     
 }
 
-
-extension ViewController:UISearchResultsUpdating{
+// MARK: - Search
+extension ViewController:UISearchResultsUpdating, CategoryDelegate{
+    func saveCategory(_ categoryName: String) {
+        searchController.searchBar.text = categoryName
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
         print("서치바에 입력되는 단어", searchController.searchBar.text ?? "")
         // 글자를 치는 순간에 다른 화면을 보여주고 싶다면 (컬렉션뷰를 보여줌)
         let vc = searchController.searchResultsController as! SearchResultViewController
         // 컬렉션뷰에 찾으려는 단어 전달
+        vc.delegate = self
         vc.searchTerm = searchController.searchBar.text ?? ""
     }
-    
-    
 }

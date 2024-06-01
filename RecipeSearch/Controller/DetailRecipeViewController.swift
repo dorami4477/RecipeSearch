@@ -13,8 +13,7 @@ class DetailRecipeViewController: UIViewController{
     @IBOutlet var detailTableView: UITableView!
     
     var recipe: Recipes?
-    var index:Int?
-    var delegate:addToPicksDelegate?
+    let coreManager = CoreDataManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +29,7 @@ class DetailRecipeViewController: UIViewController{
         detailTableView.separatorStyle = .none
         detailTableView.register(UINib(nibName: "HowToMakeCell", bundle: nil), forCellReuseIdentifier: "HowToMakeCell")
         
-        //이미지 navigation bar 위로?
+        //이미지 navigation bar 위로 올리기
         if #available(iOS 11.0, *)
         {   self.detailTableView.contentInsetAdjustmentBehavior = UIScrollView.ContentInsetAdjustmentBehavior.never;
         }else{
@@ -38,10 +37,13 @@ class DetailRecipeViewController: UIViewController{
         }
     }
     
+    //add MyPick
     @IBAction func addMyPickButtonTapped(_ sender: UIButton) {
-        print(#function)
-        guard let index else { return }
-        delegate?.saveRecipe(index)
+        if let recipe{
+            coreManager.saveToDoData(pickRecipeData: recipe) {
+                print("코어 데이터에 저장")
+            }
+        }
         navigationController?.popViewController(animated: true)
     }
 
@@ -56,6 +58,7 @@ extension DetailRecipeViewController:UITableViewDelegate, UITableViewDataSource{
         return 2
     }
     
+    //footer
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 0{
             return 0
@@ -75,21 +78,19 @@ extension DetailRecipeViewController:UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0{
-            let cell = detailTableView.dequeueReusableCell(withIdentifier: "DetailRecipeCell", for: indexPath) as! DetailRecipeCell
+            let cell = detailTableView.dequeueReusableCell(withIdentifier: DetailRecipeCell.identifier, for: indexPath) as! DetailRecipeCell
             cell.configure(recipe:self.recipe)
             cell.selectionStyle = .none
             
             return cell
         }else{
-            let cell = detailTableView.dequeueReusableCell(withIdentifier: "HowToMakeCell", for: indexPath) as! HowToMakeCell
+            let cell = detailTableView.dequeueReusableCell(withIdentifier: HowToMakeCell.identifier, for: indexPath) as! HowToMakeCell
             cell.selectionStyle = .none
-            cell.recipeLabel.text = recipe?.manualSet[indexPath.row]
-            if let imageUrl = recipe?.manualImgSet[indexPath.row]{
-                let url = URL(string: imageUrl)
-                cell.recipeImageView.kf.setImage(with: url)
-            }
+            guard let recipe else { return UITableViewCell()}
+            cell.configureData(recipe, indexPath: indexPath)
+            
             return cell
-        }
+            }
         
         
     }

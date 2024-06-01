@@ -11,4 +11,5 @@ class MyPicksCell: UICollectionViewCell {
     
     @IBOutlet var mainImageView: UIImageView!
     
+
 }

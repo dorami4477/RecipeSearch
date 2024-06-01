@@ -22,6 +22,7 @@ class SearchResultViewController: UIViewController {
     
     var categoryNames = ["후식", "반찬", "일품", "국&찌개", "밥"]
     
+    var delegate:CategoryDelegate?
     
     // (서치바에서) 검색을 위한 단어를 담는 변수 (전화면에서 전달받음)
     var searchTerm: String? {
@@ -34,6 +35,7 @@ class SearchResultViewController: UIViewController {
         super.viewDidLoad()
         setupCollectionView()
         configureButtons()
+         
     }
     func configureButtons() {
         var i = 0
@@ -54,6 +56,8 @@ class SearchResultViewController: UIViewController {
         let cateName = sender.titleLabel?.text
 
         setupDatas(term: "/RCP_PAT2=\(cateName!)")
+        //델리게이트로 값을 그전 컨트롤러에 넘겨줘야 할거 같은? 
+        delegate?.saveCategory(cateName ?? "")
         resultCollectionView.reloadData()
     }
     
@@ -68,9 +72,7 @@ class SearchResultViewController: UIViewController {
         let collectionCellWidth = (UIScreen.main.bounds.width - 4 * (CVCell.cellColumns - 1)) / CVCell.cellColumns
         
         flowLayout.itemSize = CGSize(width: collectionCellWidth, height: collectionCellWidth)
-        // 아이템 사이 간격 설정
         flowLayout.minimumInteritemSpacing = 4
-        // 아이템 위아래 사이 간격 설정
         flowLayout.minimumLineSpacing = 4
         
         // 컬렉션뷰의 속성에 할당
@@ -114,11 +116,11 @@ extension SearchResultViewController:UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = resultCollectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as! SearchResultCell
+        let cell = resultCollectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCell.identifier, for: indexPath) as! SearchResultCell
         
             let imgUrl = recipeArray[indexPath.row].imageUrl
             let url = URL(string: imgUrl)
-            cell.mainImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "star"))
+            cell.mainImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "questionmark.app.dashed"))
             cell.mainImageView.contentMode = .scaleAspectFill
         
         return cell
@@ -127,9 +129,14 @@ extension SearchResultViewController:UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(#function)
         print(indexPath.row)
-        let vc = storyboard?.instantiateViewController(withIdentifier: "DetailRecipeViewController") as! DetailRecipeViewController
+
+        let vc = storyboard?.instantiateViewController(withIdentifier: DetailRecipeViewController.identifier) as! DetailRecipeViewController
        //**** 여기가 문제
+        
+       // let nav = UINavigationController(rootViewController: vc)
         vc.recipe = recipeArray[indexPath.row]
+        
+        //nav.pushViewController(vc, animated: true)
         present(vc, animated: true)
        
     }
