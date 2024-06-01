@@ -39,12 +39,25 @@ class DetailRecipeViewController: UIViewController{
     
     //add MyPick
     @IBAction func addMyPickButtonTapped(_ sender: UIButton) {
-        if let recipe{
-            coreManager.saveToDoData(pickRecipeData: recipe) {
-                print("코어 데이터에 저장")
-            }
+        let myPicksFromCore = coreManager.getToDoListFromCoreData()
+        guard let recipe else { return }
+        if myPicksFromCore.contains(where:{ $0.recipeID == Int64(recipe.recipeID) }){
+            let alert = UIAlertController(title: "이미 있어요!", message: "동일한 레시피가 이미 저장 되어 있습니다.", preferredStyle: .alert)
+            
+            let confirm = UIAlertAction(title: "확인", style: .default)
+            let cancel = UIAlertAction(title: "취소", style: .cancel)
+            
+            alert.addAction(cancel)
+            alert.addAction(confirm)
+            
+            present(alert, animated: true)
+        }else{
+                coreManager.saveToDoData(pickRecipeData: recipe) {
+                    print("코어 데이터에 저장")
+                }
+            navigationController?.popViewController(animated: true)
         }
-        navigationController?.popViewController(animated: true)
+        
     }
 
 }

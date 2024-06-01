@@ -63,10 +63,7 @@ extension MyRecipesViewController:UITableViewDelegate, UITableViewDataSource{
         let removed = myPicks.remove(at: sourceIndexPath.row)
         myPicks.insert(removed, at: destinationIndexPath.row)
         
-        /**인덱스 순서 변경을 해줘야함...!**/
-        
-        print("startN :\(sourceIndexPath)")
-        print("destiN :\(destinationIndexPath)")
+        //인덱스 순서 변경
         var needToChangeIndex:[Int16] = []
         var updateCell:[MyRecipeCell] = []
         
@@ -81,12 +78,13 @@ extension MyRecipesViewController:UITableViewDelegate, UITableViewDataSource{
             
             start.index = desti.index
             desti.index = desti.index - 1
+
             updateCell.append(contentsOf: [start, desti])
             
             if needToChangeIndex.count > 2{
                 for i in 1...needToChangeIndex.count - 2{
                     let center = tableView.cellForRow(at: [0, destinationIndexPath.row - i]) as! MyRecipeCell
-                    center.index = Int16(center.index - 1)
+                    center.index = center.index - 1
                     updateCell.append(center)
                 }
             }
@@ -108,7 +106,6 @@ extension MyRecipesViewController:UITableViewDelegate, UITableViewDataSource{
                 for i in 1...needToChangeIndex.count - 2{
                     let center = tableView.cellForRow(at: [0, destinationIndexPath.row + i]) as! MyRecipeCell
                     center.index = center.index + 1
-                    print("중간값 :\(destinationIndexPath.row + i)=>\(center.index)")
                     updateCell.append(center)
                 }
             }

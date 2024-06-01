@@ -76,7 +76,6 @@ final class CoreDataManager {
                     toDoData.manualSet = pickRecipeData.manualSet
                     toDoData.manualImgSet = pickRecipeData.manualImgSet
                     
-                   
                     index += 1
                     UserDefaults.standard.setValue(index, forKey: "recipeIndex")
                     //appDelegate?.saveContext() // 앱델리게이트의 메서드로 해도됨

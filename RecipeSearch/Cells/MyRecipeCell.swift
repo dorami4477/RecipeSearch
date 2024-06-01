@@ -40,11 +40,12 @@ class MyRecipeCell: UITableViewCell {
         if let imageUrl = recipe.imageUrl, let url = URL(string: imageUrl){
             mainImageView.kf.setImage(with: url)
         }
-        titleLabel.text = (recipe.recipeType ?? "한식") + " | " + (recipe.recipeName ?? "음식이름")
         index = recipe.recipeIndex
         recipeID = recipe.recipeID
-        caloryLabel.text = "index : \(recipe.recipeIndex)"
-        //rcpWayLabel.text = "조리방법 :" + (recipe.recipeWay ?? "굽기")
-        //caloryLabel.text = "열량 :" + (recipe.recipeCal ?? "0")
+        
+        titleLabel.text = (recipe.recipeType ?? "한식") + " | " + (recipe.recipeName ?? "음식이름")
+        rcpWayLabel.text = "조리방법 :" + (recipe.recipeWay ?? "굽기")
+        caloryLabel.text = "열량 :" + (recipe.recipeCal ?? "0")
+
     }
 }
