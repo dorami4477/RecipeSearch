@@ -8,21 +8,33 @@
 import UIKit
 import Kingfisher
 
-class DetailRecipeViewController: UIViewController{
+final class DetailRecipeViewController: UIViewController{
 
     @IBOutlet var detailTableView: UITableView!
+    @IBOutlet var addButton: UIButton!
     
     var recipe: Recipes?
     let coreManager = CoreDataManager.shared
+    var showAddButton = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = false
         title = recipe?.recipeName
         configureTableView()
+        addButtonHidden()
     }
     
-    func configureTableView(){
+    private func addButtonHidden(){
+        if showAddButton{
+            addButton.layer.isHidden = false
+        }else{
+            addButton.layer.isHidden = true
+        }
+        
+    }
+    
+    private func configureTableView(){
         detailTableView.dataSource = self
         detailTableView.delegate = self
         detailTableView.rowHeight = UITableView.automaticDimension
@@ -76,7 +88,11 @@ extension DetailRecipeViewController:UITableViewDelegate, UITableViewDataSource{
         if section == 0{
             return 0
         }else{
-            return 60
+            if showAddButton{ //저장된 레시피 일 경우
+                return 60
+            }else{
+                return 0
+            }
         }
     }
     

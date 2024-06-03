@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyRecipesViewController: UIViewController {
+final class MyRecipesViewController: UIViewController {
     
 
     @IBOutlet var myRcipeTableView: UITableView!

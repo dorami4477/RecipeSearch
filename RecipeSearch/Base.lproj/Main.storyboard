@@ -87,10 +87,10 @@
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="LeM-zi-Ic6" secondAttribute="bottom" id="GDT-zt-s5b"/>
-                                                <constraint firstItem="LeM-zi-Ic6" firstAttribute="top" secondItem="jEs-W9-kiW" secondAttribute="top" id="fZu-8Q-txO"/>
-                                                <constraint firstItem="LeM-zi-Ic6" firstAttribute="leading" secondItem="jEs-W9-kiW" secondAttribute="leading" id="hif-AH-b52"/>
-                                                <constraint firstAttribute="trailing" secondItem="LeM-zi-Ic6" secondAttribute="trailing" id="ksy-TF-cac"/>
+                                                <constraint firstItem="LeM-zi-Ic6" firstAttribute="leading" secondItem="jEs-W9-kiW" secondAttribute="leading" id="IS1-M0-B0S"/>
+                                                <constraint firstAttribute="trailing" secondItem="LeM-zi-Ic6" secondAttribute="trailing" id="L9C-7y-wRF"/>
+                                                <constraint firstItem="LeM-zi-Ic6" firstAttribute="top" secondItem="jEs-W9-kiW" secondAttribute="top" id="MmR-Qw-b37"/>
+                                                <constraint firstAttribute="bottom" secondItem="LeM-zi-Ic6" secondAttribute="bottom" id="ar9-X6-hB7"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="172" height="166"/>
@@ -782,6 +782,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addButton" destination="a4d-es-bSh" id="uMB-0L-U5G"/>
                         <outlet property="detailTableView" destination="GlR-A3-3Y6" id="Zg5-y1-cdV"/>
                     </connections>
                 </viewController>
@@ -974,19 +975,19 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OjJ-BD-qO6">
-                                                    <rect key="frame" x="153" y="8" width="220" height="67"/>
+                                                    <rect key="frame" x="153" y="7.9999999999999982" width="220" height="20.333333333333329"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKZ-Mh-82R">
-                                                    <rect key="frame" x="153" y="79" width="220" height="21"/>
+                                                    <rect key="frame" x="153" y="32.333333333333336" width="220" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwX-qh-CBU">
-                                                    <rect key="frame" x="153" y="104" width="220" height="21"/>
+                                                    <rect key="frame" x="153" y="57.333333333333343" width="220" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1003,7 +1004,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="HwX-qh-CBU" secondAttribute="trailing" constant="20" id="b6n-ec-Bco"/>
                                                 <constraint firstItem="EiW-ms-G3q" firstAttribute="leading" secondItem="8u5-0U-skn" secondAttribute="leading" constant="20" id="q2t-PA-OKP"/>
                                                 <constraint firstItem="YKZ-Mh-82R" firstAttribute="top" secondItem="OjJ-BD-qO6" secondAttribute="bottom" constant="4" id="qkf-2i-fIy"/>
-                                                <constraint firstAttribute="bottom" secondItem="HwX-qh-CBU" secondAttribute="bottom" constant="8" id="tow-3o-VLl"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="HwX-qh-CBU" secondAttribute="bottom" constant="8" id="tow-3o-VLl"/>
                                                 <constraint firstItem="EiW-ms-G3q" firstAttribute="top" secondItem="8u5-0U-skn" secondAttribute="top" constant="8" id="wXR-ET-oCa"/>
                                                 <constraint firstAttribute="bottom" secondItem="EiW-ms-G3q" secondAttribute="bottom" constant="8" id="xDh-ZA-8I5"/>
                                             </constraints>

@@ -8,13 +8,13 @@
 import UIKit
 import Kingfisher
 
-class SearchResultViewController: UIViewController {
+final class SearchResultViewController: UIViewController {
 
     @IBOutlet var resultCollectionView: UICollectionView!
     
     @IBOutlet var categoryButtons: [UIButton]!
     // 컬렉션뷰의 레이아웃을 담당하는 객체
-    let flowLayout = UICollectionViewFlowLayout()
+    private let flowLayout = UICollectionViewFlowLayout()
     
     let networkManager = NetworkManager.shared
     
@@ -37,7 +37,7 @@ class SearchResultViewController: UIViewController {
         configureButtons()
          
     }
-    func configureButtons() {
+    private func configureButtons() {
         var i = 0
         categoryButtons.forEach {
             $0.setTitle(categoryNames[i], for: .normal)
@@ -56,13 +56,13 @@ class SearchResultViewController: UIViewController {
         let cateName = sender.titleLabel?.text
 
         setupDatas(term: "/RCP_PAT2=\(cateName!)")
-        //델리게이트로 값을 그전 컨트롤러에 넘겨줘야 할거 같은? 
+        // 델리게이트로 서치바에 값 전달
         delegate?.saveCategory(cateName ?? "")
         resultCollectionView.reloadData()
     }
     
     
-    func setupCollectionView() {
+    private func setupCollectionView() {
         
         resultCollectionView.delegate = self
         resultCollectionView.dataSource = self
@@ -81,7 +81,7 @@ class SearchResultViewController: UIViewController {
     }
     
     // 데이터 셋업
-    func setupDatas(term:String?) {
+    private func setupDatas(term:String?) {
         // 옵셔널 바인딩
         guard let term else { return }
         print("네트워킹 시작 단어 \(term)")
@@ -122,6 +122,8 @@ extension SearchResultViewController:UICollectionViewDelegate, UICollectionViewD
             let url = URL(string: imgUrl)
             cell.mainImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "questionmark.app.dashed"))
             cell.mainImageView.contentMode = .scaleAspectFill
+            cell.mainImageView.layer.cornerRadius = 5
+            cell.mainImageView.clipsToBounds = true
         
         return cell
     }

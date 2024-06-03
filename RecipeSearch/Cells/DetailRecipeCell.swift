@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailRecipeCell: UITableViewCell {
+final class DetailRecipeCell: UITableViewCell {
 
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var info01Label: UILabel!
@@ -24,11 +24,6 @@ class DetailRecipeCell: UITableViewCell {
         super.awakeFromNib()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     
     func configure(recipe:Recipes?){
         

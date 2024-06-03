@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HowToMakeCell: UITableViewCell {
+final class HowToMakeCell: UITableViewCell {
 
     @IBOutlet var recipeLabel: UILabel!
     @IBOutlet var recipeImageView: UIImageView!

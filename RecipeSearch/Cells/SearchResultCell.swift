@@ -7,8 +7,8 @@
 
 import UIKit
 
-class SearchResultCell: UICollectionViewCell {
-
+final class SearchResultCell: UICollectionViewCell {
+    
     @IBOutlet var mainImageView: UIImageView!
     
 }

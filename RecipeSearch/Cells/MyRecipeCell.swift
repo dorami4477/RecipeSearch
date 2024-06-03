@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyRecipeCell: UITableViewCell {
+final class MyRecipeCell: UITableViewCell {
 
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var titleLabel: UILabel!
@@ -28,11 +28,13 @@ class MyRecipeCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configureUI(){
+    private func configureUI(){
         titleLabel.font = .boldSystemFont(ofSize: 18)
         rcpWayLabel.textColor = .darkGray
         rcpWayLabel.font = .systemFont(ofSize: 14)
         caloryLabel.font = .systemFont(ofSize: 14)
+        mainImageView.layer.cornerRadius = 5
+        mainImageView.clipsToBounds = true
     }
 
 

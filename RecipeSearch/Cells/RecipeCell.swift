@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RecipeCell: UICollectionViewCell {
+final class RecipeCell: UICollectionViewCell {
     
     @IBOutlet var mainImageView: UIImageView!
  
@@ -23,11 +23,7 @@ class RecipeCell: UICollectionViewCell {
         configureUI()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.mainImageView.layer.cornerRadius = 10
-        self.mainImageView.clipsToBounds = true
-    }
+
     // URL ===> 이미지를 셋팅하는 메서드
     private func loadImage() {
         guard let urlString = self.imageUrl, let url = URL(string: urlString)  else { return }
@@ -43,8 +39,6 @@ class RecipeCell: UICollectionViewCell {
             // 작업의 결과물을 이미로 표시 (메인큐)
             DispatchQueue.main.async {
                 self.mainImageView.image = UIImage(data: data)
-                self.mainImageView.layer.cornerRadius = 10
-                self.mainImageView.clipsToBounds = true
             }
         }
     }
@@ -57,7 +51,7 @@ class RecipeCell: UICollectionViewCell {
     }
     
     
-    func configureUI(){
+    private func configureUI(){
         mainImageView.image = UIImage(systemName: "star")
         mainImageView.contentMode = .scaleAspectFill
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPicksCell: UICollectionViewCell {
+final class MyPicksCell: UICollectionViewCell {
     
     @IBOutlet var mainImageView: UIImageView!
     

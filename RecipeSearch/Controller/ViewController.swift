@@ -14,8 +14,8 @@ final class ViewController: UIViewController{
     //컬렉션뷰
     @IBOutlet var myPicksCollectionView: UICollectionView!
     @IBOutlet var recentCollectionView: UICollectionView!
-    let flowLayout = UICollectionViewFlowLayout()
-    let flowLayout2 = UICollectionViewFlowLayout()
+    private let flowLayout = UICollectionViewFlowLayout()
+    private let flowLayout2 = UICollectionViewFlowLayout()
 
     
     let searchController = UISearchController(searchResultsController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: SearchResultViewController.identifier) as! SearchResultViewController)
@@ -43,7 +43,7 @@ final class ViewController: UIViewController{
         myPicksCollectionView.reloadData()
     }
 
-    func configure(){
+    private func configure(){
         section01TitleLabel.font = .systemFont(ofSize: 25, weight: .bold)
         section02TitleLabel.font = .systemFont(ofSize: 25, weight: .bold)
         
@@ -59,7 +59,7 @@ final class ViewController: UIViewController{
         searchController.searchBar.autocapitalizationType = .none
     }
     
-    func setData(){
+    private func setData(){
         dataManager.fetchRecipe(searchTerm: nil){ result in
             print(#function)
             switch result {
@@ -76,8 +76,8 @@ final class ViewController: UIViewController{
     }
 
     
-    func setupCollectionView(){
-        // 컬렉션뷰의 스코롤 방향 설정
+    private func setupCollectionView(){
+
         flowLayout.scrollDirection = .horizontal
 
         let collectionCellWidth = UIScreen.main.bounds.width - CVCell.spacingWitdh - 20
@@ -89,7 +89,6 @@ final class ViewController: UIViewController{
         flowLayout2.itemSize = CGSize(width: UIScreen.main.bounds.width * 0.6 , height: UIScreen.main.bounds.width * 0.6 )
         flowLayout2.minimumLineSpacing = 20
         
-        //컬렉션뷰의 속성에 할당
         recentCollectionView.collectionViewLayout = flowLayout
         myPicksCollectionView.collectionViewLayout = flowLayout2
         
@@ -109,10 +108,11 @@ extension ViewController:UICollectionViewDataSource, UICollectionViewDelegate{
         case myPicksCollectionView:
             let recipe = myPicks[indexPath.row]
             detailVC.recipe = Recipes(recipeID: Int(recipe.recipeID), recipeName: recipe.recipeName!, recipeWay: recipe.recipeWay!, recipeType: recipe.recipeType!, ingredient:recipe.ingredient!, recipeCal: recipe.recipeCal!, infoCar: recipe.infoCar!, infoPro: recipe.infoPro!, infoFat: recipe.infoFat!, infoNa: recipe.infoNa!, imageUrl: recipe.imageUrl!, manualSet: recipe.manualSet, manualImgSet: recipe.manualImgSet)
+            detailVC.showAddButton = false
         case recentCollectionView:
             let recipe = recipeArray[indexPath.row]
             detailVC.recipe = recipe
-        
+            detailVC.showAddButton = true
         default:
             let recipe = recipeArray[indexPath.row]
             detailVC.recipe = recipe
