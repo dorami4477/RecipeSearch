@@ -9,9 +9,9 @@ import UIKit
 
 final class MyRecipesViewController: UIViewController {
     
-
+    
     @IBOutlet var myRcipeTableView: UITableView!
-    let coreManager = CoreDataManager.shared
+    private let coreManager = CoreDataManager.shared
     var myPicks:[Recipe] = []
     
     
@@ -25,7 +25,7 @@ final class MyRecipesViewController: UIViewController {
         let edit = UIBarButtonItem(title: "edit", style: .plain, target:self, action: #selector(editButtonClicked))
         navigationItem.rightBarButtonItem = edit
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         myPicks = coreManager.getToDoListFromCoreData()
         myRcipeTableView.reloadData()
@@ -58,12 +58,20 @@ extension MyRecipesViewController:UITableViewDelegate, UITableViewDataSource{
         cell.configureData(myPicks[indexPath.row])
         return cell
     }
-    
+    //셀 클릭시
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailVC = storyboard?.instantiateViewController(withIdentifier: DetailRecipeViewController.identifier) as! DetailRecipeViewController
+        
+        let recipe = myPicks[indexPath.row]
+        detailVC.recipe = Recipes(recipeID: Int(recipe.recipeID), recipeName: recipe.recipeName!, recipeWay: recipe.recipeWay!, recipeType: recipe.recipeType!, ingredient:recipe.ingredient!, recipeCal: recipe.recipeCal!, infoCar: recipe.infoCar!, infoPro: recipe.infoPro!, infoFat: recipe.infoFat!, infoNa: recipe.infoNa!, imageUrl: recipe.imageUrl!, manualSet: recipe.manualSet, manualImgSet: recipe.manualImgSet)
+        navigationController?.pushViewController(detailVC, animated: true)
+        
+    }
+    //레시피 순서 변경
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let removed = myPicks.remove(at: sourceIndexPath.row)
         myPicks.insert(removed, at: destinationIndexPath.row)
         
-        //인덱스 순서 변경
         var needToChangeIndex:[Int16] = []
         var updateCell:[MyRecipeCell] = []
         
@@ -78,7 +86,7 @@ extension MyRecipesViewController:UITableViewDelegate, UITableViewDataSource{
             
             start.index = desti.index
             desti.index = desti.index - 1
-
+            
             updateCell.append(contentsOf: [start, desti])
             
             if needToChangeIndex.count > 2{
@@ -94,10 +102,10 @@ extension MyRecipesViewController:UITableViewDelegate, UITableViewDataSource{
             }
             
         }else{
-                for i in destinationIndexPath.row...sourceIndexPath.row{
-                    let cell = tableView.cellForRow(at: [0, i]) as! MyRecipeCell
-                    needToChangeIndex.append(cell.index)
-                }
+            for i in destinationIndexPath.row...sourceIndexPath.row{
+                let cell = tableView.cellForRow(at: [0, i]) as! MyRecipeCell
+                needToChangeIndex.append(cell.index)
+            }
             start.index = desti.index
             desti.index = desti.index + 1
             updateCell.append(contentsOf: [start, desti])
@@ -114,14 +122,13 @@ extension MyRecipesViewController:UITableViewDelegate, UITableViewDataSource{
                 print("순서바꾸기")
             }
         }
-       
+        
     }
-
     
+    //스와이프시 레시피 삭제
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let delete = UIContextualAction(style: .normal, title: "") { (_, _, success: @escaping (Bool) -> Void) in
-
             
             let alert = UIAlertController(title: "정말로 삭제 하시겠습니까?", message: nil, preferredStyle: .alert)
             
@@ -146,12 +153,12 @@ extension MyRecipesViewController:UITableViewDelegate, UITableViewDataSource{
             alert.addAction(delete)
             
             self.present(alert, animated: true)
-
+            
         }
         
         delete.backgroundColor = .systemRed
         delete.image = UIImage(systemName: "trash.fill")
-
+        
         return UISwipeActionsConfiguration(actions: [delete])
     }
     

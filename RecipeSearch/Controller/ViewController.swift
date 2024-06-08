@@ -146,12 +146,12 @@ extension ViewController:UICollectionViewDataSource, UICollectionViewDelegate{
             let cell = recentCollectionView.dequeueReusableCell(withReuseIdentifier: RecipeCell.identifier, for: indexPath) as! RecipeCell
                 cell.imageUrl = recipeArray[indexPath.row].imageUrl
                 return cell
-  
+            
         //myPick collectionView
         }else if collectionView == myPicksCollectionView{
             let cell = myPicksCollectionView.dequeueReusableCell(withReuseIdentifier: MyPicksCell.identifier, for: indexPath) as! MyPicksCell
             if myPicks.count == 0{
-                cell.mainImageView.image = UIImage(systemName: "questionmark.app.dashed")
+                cell.mainImageView.image = UIImage(systemName: "questionmark.app.dashed")?.withTintColor(.gray)
             }else{
                 let url = URL(string: myPicks[indexPath.row].imageUrl!)
                 cell.mainImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "questionmark.app.dashed"))

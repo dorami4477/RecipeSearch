@@ -19,10 +19,9 @@ final class DetailRecipeViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.prefersLargeTitles = false
-        title = recipe?.recipeName
         configureTableView()
         addButtonHidden()
+        configureNavi()
     }
     
     private func addButtonHidden(){
@@ -40,14 +39,20 @@ final class DetailRecipeViewController: UIViewController{
         detailTableView.rowHeight = UITableView.automaticDimension
         detailTableView.separatorStyle = .none
         detailTableView.register(UINib(nibName: "HowToMakeCell", bundle: nil), forCellReuseIdentifier: "HowToMakeCell")
-        
+    }
+    
+    private func configureNavi(){
+        navigationController?.navigationBar.prefersLargeTitles = false
+        title = recipe?.recipeName
         //이미지 navigation bar 위로 올리기
         if #available(iOS 11.0, *)
         {   self.detailTableView.contentInsetAdjustmentBehavior = UIScrollView.ContentInsetAdjustmentBehavior.never;
         }else{
             self.automaticallyAdjustsScrollViewInsets = false
         }
+        
     }
+    
     
     //add MyPick
     @IBAction func addMyPickButtonTapped(_ sender: UIButton) {

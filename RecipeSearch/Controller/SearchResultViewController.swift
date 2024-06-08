@@ -11,16 +11,15 @@ import Kingfisher
 final class SearchResultViewController: UIViewController {
 
     @IBOutlet var resultCollectionView: UICollectionView!
-    
     @IBOutlet var categoryButtons: [UIButton]!
-    // 컬렉션뷰의 레이아웃을 담당하는 객체
+
     private let flowLayout = UICollectionViewFlowLayout()
     
-    let networkManager = NetworkManager.shared
+    private let networkManager = NetworkManager.shared
     
     var recipeArray:[Recipes] = []
     
-    var categoryNames = ["후식", "반찬", "일품", "국&찌개", "밥"]
+    private let categoryNames = ["후식", "반찬", "일품", "국&찌개", "밥"]
     
     var delegate:CategoryDelegate?
     
@@ -48,9 +47,6 @@ final class SearchResultViewController: UIViewController {
             i += 1
         }
     }
-    
-
-
     
     @IBAction func categoryButtonClicked(_ sender: UIButton) {
         let cateName = sender.titleLabel?.text
@@ -80,16 +76,14 @@ final class SearchResultViewController: UIViewController {
         
     }
     
-    // 데이터 셋업
+    // MARK: - data setUp
     private func setupDatas(term:String?) {
-        // 옵셔널 바인딩
+
         guard let term else { return }
         print("네트워킹 시작 단어 \(term)")
         
-        // (네트워킹 시작전에) 다시 빈배열로 만들기
         self.recipeArray = []
-        
-        // 네트워킹 시작 (찾고자하는 단어를 가지고)
+    
         //RCP_NM=값
         networkManager.fetchRecipe(searchTerm: term){ result in
             switch result {
@@ -97,7 +91,6 @@ final class SearchResultViewController: UIViewController {
                 // 결과를 배열에 담고
                 self.recipeArray = Datas
                 print(self.recipeArray.count)
-                // 컬렉션뷰를 리로드 (메인쓰레드에서)
                 DispatchQueue.main.async {
                     self.resultCollectionView.reloadData()
                 }
@@ -110,6 +103,7 @@ final class SearchResultViewController: UIViewController {
     
 }
 
+// MARK: - CollectionView
 extension SearchResultViewController:UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return recipeArray.count
@@ -133,13 +127,10 @@ extension SearchResultViewController:UICollectionViewDelegate, UICollectionViewD
         print(indexPath.row)
 
         let vc = storyboard?.instantiateViewController(withIdentifier: DetailRecipeViewController.identifier) as! DetailRecipeViewController
-       //**** 여기가 문제
         
-       // let nav = UINavigationController(rootViewController: vc)
+        let nav = UINavigationController(rootViewController: vc)
         vc.recipe = recipeArray[indexPath.row]
-        
-        //nav.pushViewController(vc, animated: true)
-        present(vc, animated: true)
+        present(nav, animated: true)
        
     }
     
